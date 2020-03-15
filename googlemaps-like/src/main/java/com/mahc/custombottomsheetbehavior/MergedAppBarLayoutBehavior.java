@@ -252,11 +252,15 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    ((AppCompatActivity)mContext).setSupportActionBar(mToolbar);
+                    if (mContext instanceof AppCompatActivity) {
+                        ((AppCompatActivity)mContext).setSupportActionBar(mToolbar);
+                    }
                     mToolbar.setNavigationOnClickListener(mOnNavigationClickListener);
-                    ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
-                    if (actionBar != null) {
-                        actionBar.setDisplayHomeAsUpEnabled(true);
+                    if (mContext instanceof AppCompatActivity) {
+                        ActionBar actionBar = ((AppCompatActivity) mContext).getSupportActionBar();
+                        if (actionBar != null) {
+                            actionBar.setDisplayHomeAsUpEnabled(true);
+                        }
                     }
                     mVisible = true;
                 }
@@ -274,7 +278,9 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    ((AppCompatActivity)mContext).setSupportActionBar(null);
+                    if (mContext instanceof AppCompatActivity) {
+                        ((AppCompatActivity) mContext).setSupportActionBar(null);
+                    }
                     mVisible = false;
                 }
             });
@@ -312,7 +318,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     }
 
     private boolean isStatusBarVisible(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContext instanceof Activity){
             return ((Activity)mContext).getWindow().getStatusBarColor() ==
                     ContextCompat.getColor(mContext,R.color.colorPrimaryDark);
         }
@@ -320,7 +326,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     }
 
     private void setStatusBarBackgroundVisible(boolean visible){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContext instanceof Activity){
             if(visible){
                 Window window = ((Activity)mContext).getWindow();
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
