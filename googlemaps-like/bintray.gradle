@@ -7,9 +7,6 @@ File localPropertiesFile = project.file("local.properties")
 if(localPropertiesFile.exists()){
     properties.load(localPropertiesFile.newDataInputStream())
 }
-else {
-    throw new GradleException("local.properties file doesn't exist")
-}
 File projectPropertiesFile = project.file("project.properties")
 if(projectPropertiesFile.exists()){
     properties.load(projectPropertiesFile.newDataInputStream())
