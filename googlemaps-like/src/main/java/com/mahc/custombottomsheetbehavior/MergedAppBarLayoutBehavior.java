@@ -84,7 +84,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         mContext = context;
 
         TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        context.getTheme().resolveAttribute(R.attr.colorPrimaryVariant, typedValue, true);
         statusBarColor = typedValue.data;
     }
 
