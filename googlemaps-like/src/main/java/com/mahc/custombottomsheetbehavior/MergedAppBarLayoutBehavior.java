@@ -18,6 +18,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -76,9 +77,15 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     private ValueAnimator mTitleAlphaValueAnimator;
     private int mCurrentTitleAlpha = 0;
 
+    private int statusBarColor;
+
     public MergedAppBarLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        statusBarColor = typedValue.data;
     }
 
     @Override
@@ -319,8 +326,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
 
     private boolean isStatusBarVisible(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContext instanceof Activity){
-            return ((Activity)mContext).getWindow().getStatusBarColor() ==
-                    ContextCompat.getColor(mContext,R.color.colorPrimaryDark);
+            return ((Activity)mContext).getWindow().getStatusBarColor() == statusBarColor;
         }
         return true;
     }
@@ -330,11 +336,11 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
             if(visible){
                 Window window = ((Activity)mContext).getWindow();
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(ContextCompat.getColor(mContext,R.color.colorPrimaryDark));
+                //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(statusBarColor);
             }else {
                 Window window = ((Activity)mContext).getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                //window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.setStatusBarColor(ContextCompat.getColor(mContext,android.R.color.transparent));
             }
