@@ -106,7 +106,7 @@ public class ScrollingAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBeh
         int mCollapsedY = dependency.getHeight() - mBottomSheetBehaviorRef.get().getPeekHeight();
         mVisible = (dependency.getY() >= mCollapsedY);
 
-        setStatusBarBackgroundVisible(mVisible);
+        //setStatusBarBackgroundVisible(mVisible);
         if(!mVisible) child.setY((int) child.getY() - child.getHeight() - getStatusBarHeight());
         mInit = true;
         /**
@@ -141,14 +141,14 @@ public class ScrollingAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBeh
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
-                    if(visible)
-                        setStatusBarBackgroundVisible(true);
+                    /*if(visible)
+                        setStatusBarBackgroundVisible(true);*/
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if(!visible)
-                        setStatusBarBackgroundVisible(false);
+                    /*if(!visible)
+                        setStatusBarBackgroundVisible(false);*/
                     mVisible = visible;
                     super.onAnimationEnd(animation);
                 }
