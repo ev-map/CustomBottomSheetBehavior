@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
-import com.google.android.material.appbar.AppBarLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -17,6 +16,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.lang.ref.WeakReference;
 
@@ -79,7 +80,7 @@ public class ScrollingAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBeh
         }
         if (mBottomSheetBehaviorRef == null || mBottomSheetBehaviorRef.get() == null)
             getBottomSheetBehavior(parent);
-        setAppBarVisible((AppBarLayout)child,dependency.getY() >= dependency.getHeight() - mBottomSheetBehaviorRef.get().getPeekHeight());
+        setAppBarVisible(child,dependency.getY() >= dependency.getHeight() - mBottomSheetBehaviorRef.get().getPeekHeight());
         return true;
     }
 
@@ -117,7 +118,7 @@ public class ScrollingAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBeh
         return !mVisible;
     }
 
-    public void setAppBarVisible(final AppBarLayout appBarLayout, final boolean visible){
+    public void setAppBarVisible(final View appBarLayout, final boolean visible){
 
         if(visible == mVisible)
             return;
