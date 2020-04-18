@@ -77,15 +77,9 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     private ValueAnimator mTitleAlphaValueAnimator;
     private int mCurrentTitleAlpha = 0;
 
-    private int statusBarColor;
-
     public MergedAppBarLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.colorPrimaryVariant, typedValue, true);
-        statusBarColor = typedValue.data;
     }
 
     @Override
@@ -259,7 +253,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    if (mContext instanceof AppCompatActivity) {
+                    /*if (mContext instanceof AppCompatActivity) {
                         ((AppCompatActivity)mContext).setSupportActionBar(mToolbar);
                     }
                     mToolbar.setNavigationOnClickListener(mOnNavigationClickListener);
@@ -268,7 +262,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                         if (actionBar != null) {
                             actionBar.setDisplayHomeAsUpEnabled(true);
                         }
-                    }
+                    }*/
                     mVisible = true;
                 }
             });
@@ -285,9 +279,9 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    if (mContext instanceof AppCompatActivity) {
+                    /*if (mContext instanceof AppCompatActivity) {
                         ((AppCompatActivity) mContext).setSupportActionBar(null);
-                    }
+                    }*/
                     mVisible = false;
                 }
             });
@@ -324,7 +318,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         }
     }
 
-    private boolean isStatusBarVisible(){
+    /*private boolean isStatusBarVisible(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContext instanceof Activity){
             return ((Activity)mContext).getWindow().getStatusBarColor() == statusBarColor;
         }
@@ -345,7 +339,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 window.setStatusBarColor(ContextCompat.getColor(mContext,android.R.color.transparent));
             }
         }
-    }
+    }*/
 
     public void setNavigationOnClickListener(View.OnClickListener listener){
         this.mOnNavigationClickListener = listener;
