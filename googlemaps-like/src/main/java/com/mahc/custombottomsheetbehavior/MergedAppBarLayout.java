@@ -17,7 +17,7 @@ import android.view.View;
 public class MergedAppBarLayout extends AppBarLayout {
 
     public Toolbar toolbar;
-    protected View background;
+    public View background;
 
     public MergedAppBarLayout(Context context) {
         super(context);
