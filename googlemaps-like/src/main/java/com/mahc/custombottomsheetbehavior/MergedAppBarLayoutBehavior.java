@@ -112,7 +112,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         }else if(isDependencyYBetweenAnchorPointAndToolbar(parent, child,dependency)){
 
             childMoved = setToolbarVisible(true,child);
-            setFullBackGroundColor(android.R.color.transparent);
+            setFullBackGroundColor(android.R.color.transparent, child);
             setPartialBackGroundHeight(0);
 
         } else if(isDependencyYBelowToolbar(child, dependency) && ! isDependencyYReachTop(dependency)){
@@ -122,7 +122,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 setStatusBarBackgroundVisible(false);*/
             if(isTitleVisible())
                 setTitleVisible(false);
-            setFullBackGroundColor(android.R.color.transparent);
+            setFullBackGroundColor(android.R.color.transparent, child);
             setPartialBackGroundHeight((int)((child.getHeight() + child.getY()) - dependency.getY()));
 
         } else if(isDependencyYBelowStatusToolbar(child, dependency) || isDependencyYReachTop(dependency)){
@@ -132,7 +132,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 setStatusBarBackgroundVisible(true);*/
             if(!isTitleVisible())
                 setTitleVisible(true);
-            setFullBackGroundColor(R.color.colorPrimary);
+            setFullBackGroundColor(R.color.colorPrimary, child);
             setPartialBackGroundHeight(0);
         }
         return childMoved;
@@ -162,7 +162,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         child.setVisibility(mVisible ? View.VISIBLE : View.INVISIBLE);
 //        setStatusBarBackgroundVisible(mVisible);
 
-        setFullBackGroundColor(mVisible && mCurrentTitleAlpha == 1 ? R.color.colorPrimary: android.R.color.transparent);
+        setFullBackGroundColor(mVisible && mCurrentTitleAlpha == 1 ? R.color.colorPrimary: android.R.color.transparent, child);
         setPartialBackGroundHeight(0);
         mTitleTextView.setText(mToolbarTitle);
         mTitleTextView.setAlpha(mCurrentTitleAlpha);
@@ -220,8 +220,8 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         mBackground.setLayoutParams(mBackGroundLayoutParams);
     }
 
-    private void setFullBackGroundColor(@ColorRes int colorRes){
-        mToolbar.setBackgroundColor(ContextCompat.getColor(mContext,colorRes));
+    private void setFullBackGroundColor(@ColorRes int colorRes, View child){
+        child.setBackgroundColor(ContextCompat.getColor(mContext,colorRes));
     }
 
     private TextView findTitleTextView(Toolbar toolbar){
