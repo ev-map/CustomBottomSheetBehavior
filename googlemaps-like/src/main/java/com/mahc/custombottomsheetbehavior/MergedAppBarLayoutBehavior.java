@@ -120,8 +120,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
             childMoved = setToolbarVisible(true,child);
             /*if(isStatusBarVisible())
                 setStatusBarBackgroundVisible(false);*/
-            if(isTitleVisible())
-                setTitleVisible(false);
+            setTitleVisible(false);
             setFullBackGroundColor(android.R.color.transparent, child);
             setPartialBackGroundHeight((int)((child.getHeight() + child.getY()) - dependency.getY()));
 
@@ -130,8 +129,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
             childMoved = setToolbarVisible(true,child);
             /*if(!isStatusBarVisible())
                 setStatusBarBackgroundVisible(true);*/
-            if(!isTitleVisible())
-                setTitleVisible(true);
+            setTitleVisible(true);
             setFullBackGroundColor(R.color.colorPrimary, child);
             setPartialBackGroundHeight(0);
         }
@@ -291,31 +289,35 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         return childMoved;
     }
 
-    private boolean isTitleVisible(){
-        return mTitleTextView.getAlpha() == 1;
-    }
-
     private void setTitleVisible(boolean visible){
 
         if((visible && mTitleTextView.getAlpha() == 1)||
                 (!visible && mTitleTextView.getAlpha() == 0))
             return;
 
-        if(mTitleAlphaValueAnimator == null || !mTitleAlphaValueAnimator.isRunning()){
-            mToolbar.setTitle(mToolbarTitle);
-            int startAlpha = visible ? 0 : 1;
-            int endAlpha = mCurrentTitleAlpha = visible ? 1 : 0;
-
-            mTitleAlphaValueAnimator = ValueAnimator.ofFloat(startAlpha,endAlpha);
-            mTitleAlphaValueAnimator.setDuration(mContext.getResources().getInteger(android.R.integer.config_shortAnimTime));
-            mTitleAlphaValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mTitleTextView.setAlpha((Float) animation.getAnimatedValue());
-                }
-            });
-            mTitleAlphaValueAnimator.start();
+        if(mTitleAlphaValueAnimator != null) {
+            mTitleAlphaValueAnimator.cancel();
+            mTitleAlphaValueAnimator = null;
         }
+        mToolbar.setTitle(mToolbarTitle);
+        int startAlpha = visible ? 0 : 1;
+        int endAlpha = mCurrentTitleAlpha = visible ? 1 : 0;
+
+        mTitleAlphaValueAnimator = ValueAnimator.ofFloat(startAlpha,endAlpha);
+        mTitleAlphaValueAnimator.setDuration(mContext.getResources().getInteger(android.R.integer.config_shortAnimTime));
+        mTitleAlphaValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mTitleTextView.setAlpha((Float) animation.getAnimatedValue());
+            }
+        });
+        mTitleAlphaValueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mTitleAlphaValueAnimator = null;
+            }
+        });
+        mTitleAlphaValueAnimator.start();
     }
 
     /*private boolean isStatusBarVisible(){
