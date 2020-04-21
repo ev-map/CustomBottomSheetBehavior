@@ -401,6 +401,13 @@ public class BottomSheetBehaviorGoogleMapsLike<V extends View> extends Coordinat
             }
         }
         dispatchOnSlide(child.getTop());
+
+        // workaround for a framework bug, see https://github.com/miguelhincapie/CustomBottomSheetBehavior/issues/48
+        if ( mNestedScrollingChildRef.get() != null ) {
+            CoordinatorLayout cl = (CoordinatorLayout) mNestedScrollingChildRef.get().getParent();
+            cl.dispatchDependentViewsChanged(mNestedScrollingChildRef.get());
+        }
+        
         mNestedScrolled = true;
     }
 
@@ -821,6 +828,12 @@ public class BottomSheetBehaviorGoogleMapsLike<V extends View> extends Coordinat
                 ViewCompat.postOnAnimation( mView, this );
             } else {
                 setStateInternal( mTargetState );
+            }
+
+            // workaround for a framework bug, see https://github.com/miguelhincapie/CustomBottomSheetBehavior/issues/48
+            if ( mNestedScrollingChildRef.get() != null ) {
+                CoordinatorLayout cl = (CoordinatorLayout) mNestedScrollingChildRef.get().getParent();
+                cl.dispatchDependentViewsChanged(mNestedScrollingChildRef.get());
             }
         }
     }
