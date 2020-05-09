@@ -2,9 +2,12 @@ package com.mahc.custombottomsheetbehavior;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -32,6 +35,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,6 +84,9 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
 
     private ValueAnimator mTitleAlphaValueAnimator;
     private int mCurrentTitleAlpha = 0;
+
+    private List<LayerDrawable> transitionDrawables;
+    private boolean buttonBackgroundVisible = true;
 
     public MergedAppBarLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -231,25 +239,30 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     }
 
     private void setButtonBackgrounds(boolean b) {
-        for (int i = 0; i < mToolbar.getChildCount(); i++) {
-            View it = mToolbar.getChildAt(i);
-            if (it instanceof ImageButton) {
-                if (b) {
+        if (transitionDrawables == null) {
+            transitionDrawables = new ArrayList<>();
+            for (int i = 0; i < mToolbar.getChildCount(); i++) {
+                View it = mToolbar.getChildAt(i);
+                if (it instanceof ImageButton) {
                     it.setBackgroundResource(R.drawable.circle_bg_nav_button);
-                } else {
-                    it.setBackgroundResource(R.drawable.default_bg);
-                }
-            } else if (it instanceof ActionMenuView) {
-                ActionMenuView menu = (ActionMenuView) it;
-                for (int j = 0; j < menu.getChildCount(); j++) {
-                    View ab = menu.getChildAt(j);
-                    if (b) {
+                    transitionDrawables.add((LayerDrawable) it.getBackground());
+                } else if (it instanceof ActionMenuView) {
+                    ActionMenuView menu = (ActionMenuView) it;
+                    for (int j = 0; j < menu.getChildCount(); j++) {
+                        View ab = menu.getChildAt(j);
                         ab.setBackgroundResource(R.drawable.circle_bg_menu_item);
-                    } else {
-                        ab.setBackgroundResource(R.drawable.default_bg);
+                        transitionDrawables.add((LayerDrawable) ab.getBackground());
                     }
                 }
             }
+        }
+
+        if (b == buttonBackgroundVisible) return;
+        buttonBackgroundVisible = b;
+
+        for (LayerDrawable d : transitionDrawables) {
+            ObjectAnimator.ofInt(d.getDrawable(0), "alpha", b ? 255 : 0)
+                    .setDuration(200).start();
         }
     }
 
