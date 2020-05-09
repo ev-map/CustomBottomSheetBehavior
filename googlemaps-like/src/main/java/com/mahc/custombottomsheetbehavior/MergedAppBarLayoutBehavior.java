@@ -11,6 +11,8 @@ import android.os.Parcelable;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import com.google.android.material.appbar.AppBarLayout;
+
+import androidx.appcompat.widget.ActionMenuView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -26,6 +28,7 @@ import android.view.ViewPropertyAnimator;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
@@ -113,6 +116,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
 
             childMoved = setToolbarVisible(true,child);
             setFullBackGroundColor(android.R.color.transparent, child);
+            setButtonBackgrounds(true);
             setPartialBackGroundHeight(0);
 
         } else if(isDependencyYBelowToolbar(child, dependency) && ! isDependencyYReachTop(dependency)){
@@ -122,6 +126,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 setStatusBarBackgroundVisible(false);*/
             setTitleVisible(false);
             setFullBackGroundColor(android.R.color.transparent, child);
+            setButtonBackgrounds(true);
             setPartialBackGroundHeight((int)((child.getHeight() + child.getY()) - dependency.getY()));
 
         } else if(isDependencyYBelowStatusToolbar(child, dependency) || isDependencyYReachTop(dependency)){
@@ -131,6 +136,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 setStatusBarBackgroundVisible(true);*/
             setTitleVisible(true);
             setFullBackGroundColor(R.color.colorPrimary, child);
+            setButtonBackgrounds(false);
             setPartialBackGroundHeight(0);
         }
         return childMoved;
@@ -160,7 +166,9 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         child.setVisibility(mVisible ? View.VISIBLE : View.INVISIBLE);
 //        setStatusBarBackgroundVisible(mVisible);
 
-        setFullBackGroundColor(mVisible && mCurrentTitleAlpha == 1 ? R.color.colorPrimary: android.R.color.transparent, child);
+        boolean fullBackground = mVisible && mCurrentTitleAlpha == 1;
+        setFullBackGroundColor(fullBackground ? R.color.colorPrimary: android.R.color.transparent, child);
+        setButtonBackgrounds(!fullBackground);
         setPartialBackGroundHeight(0);
         mTitleTextView.setText(mToolbarTitle);
         mTitleTextView.setAlpha(mCurrentTitleAlpha);
@@ -220,6 +228,29 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
 
     private void setFullBackGroundColor(@ColorRes int colorRes, View child){
         child.setBackgroundColor(ContextCompat.getColor(mContext,colorRes));
+    }
+
+    private void setButtonBackgrounds(boolean b) {
+        for (int i = 0; i < mToolbar.getChildCount(); i++) {
+            View it = mToolbar.getChildAt(i);
+            if (it instanceof ImageButton) {
+                if (b) {
+                    it.setBackgroundResource(R.drawable.circle_bg_nav_button);
+                } else {
+                    it.setBackgroundResource(R.drawable.default_bg);
+                }
+            } else if (it instanceof ActionMenuView) {
+                ActionMenuView menu = (ActionMenuView) it;
+                for (int j = 0; j < menu.getChildCount(); j++) {
+                    View ab = menu.getChildAt(j);
+                    if (b) {
+                        ab.setBackgroundResource(R.drawable.circle_bg_menu_item);
+                    } else {
+                        ab.setBackgroundResource(R.drawable.default_bg);
+                    }
+                }
+            }
+        }
     }
 
     private TextView findTitleTextView(Toolbar toolbar){
