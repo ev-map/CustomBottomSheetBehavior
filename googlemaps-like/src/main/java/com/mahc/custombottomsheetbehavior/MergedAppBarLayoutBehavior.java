@@ -181,7 +181,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         mTitleTextView.setText(mToolbarTitle);
         mTitleTextView.setAlpha(mCurrentTitleAlpha);
         mInit = true;
-        setToolbarVisible(false,child);
+        //setToolbarVisible(false,child);
     }
 
     /**
