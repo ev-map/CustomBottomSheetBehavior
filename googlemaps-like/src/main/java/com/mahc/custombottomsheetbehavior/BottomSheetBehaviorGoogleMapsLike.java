@@ -245,8 +245,11 @@ public class BottomSheetBehaviorGoogleMapsLike<V extends View> extends Coordinat
                 int initialX = (int) event.getX();
                 mInitialY = (int) event.getY();
                 if(mState == STATE_ANCHOR_POINT){
-                    mActivePointerId = event.getPointerId(event.getActionIndex());
-                    mTouchingScrollingChild = true;
+                    View scroll = mNestedScrollingChildRef.get();
+                    if (scroll != null && scroll.getLeft() <= initialX && initialX <= scroll.getRight()) {
+                        mActivePointerId = event.getPointerId(event.getActionIndex());
+                        mTouchingScrollingChild = true;
+                    }
                 }else {
                     View scroll = mNestedScrollingChildRef.get();
                     if (scroll != null && parent.isPointInChildBounds(scroll, initialX, mInitialY)) {
