@@ -4,10 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,17 +17,12 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewPropertyAnimator;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -244,13 +237,13 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
             for (int i = 0; i < mToolbar.getChildCount(); i++) {
                 View it = mToolbar.getChildAt(i);
                 if (it instanceof ImageButton) {
-                    it.setBackgroundResource(R.drawable.circle_bg_nav_button);
+                    it.setBackgroundResource(R.drawable.bottomsheetbehavior_circle_bg);
                     transitionDrawables.add((LayerDrawable) it.getBackground());
                 } else if (it instanceof ActionMenuView) {
                     ActionMenuView menu = (ActionMenuView) it;
                     for (int j = 0; j < menu.getChildCount(); j++) {
                         View ab = menu.getChildAt(j);
-                        ab.setBackgroundResource(R.drawable.circle_bg_menu_item);
+                        ab.setBackgroundResource(R.drawable.bottomsheetbehavior_circle_bg);
                         transitionDrawables.add((LayerDrawable) ab.getBackground());
                     }
                 }

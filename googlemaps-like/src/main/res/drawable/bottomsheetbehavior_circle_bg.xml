@@ -4,14 +4,9 @@
         android:top="4dp"
         android:left="4dp"
         android:right="4dp"
-        android:bottom="4dp">
-        <shape
-            android:shape="oval">
-            <solid android:color="@color/menu_item_bg" />
-            <size
-                android:height="28dp"
-                android:width="28dp"/>
-        </shape>
+        android:bottom="4dp"
+        android:drawable="@drawable/bottomsheetbehavior_circle"
+        android:gravity="center">
     </item>
     <item android:drawable="?attr/controlBackground"/>
 </layer-list>
