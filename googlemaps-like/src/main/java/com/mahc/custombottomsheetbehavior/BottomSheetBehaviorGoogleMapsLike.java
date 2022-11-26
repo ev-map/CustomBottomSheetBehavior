@@ -8,7 +8,9 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.ScrollingView;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -620,10 +622,12 @@ public class BottomSheetBehaviorGoogleMapsLike<V extends View> extends Coordinat
         int top;
         if (state == STATE_COLLAPSED) {
             top = mMaxOffset;
+            resetChildScroll(child);
         }
         else
         if (state == STATE_ANCHOR_POINT) {
             top = mAnchorPoint;
+            resetChildScroll(child);
         }
         else
         if (state == STATE_EXPANDED) {
@@ -632,12 +636,19 @@ public class BottomSheetBehaviorGoogleMapsLike<V extends View> extends Coordinat
         else
         if (mHideable && state == STATE_HIDDEN) {
             top = mParentHeight;
+            resetChildScroll(child);
         } else {
             throw new IllegalArgumentException("Illegal state argument: " + state);
         }
         setStateInternal(STATE_SETTLING);
         if (mViewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
             ViewCompat.postOnAnimation(child, new SettleRunnable(child, state));
+        }
+    }
+
+    private void resetChildScroll(View child) {
+        if (child instanceof NestedScrollView) {
+            ((NestedScrollView) child).smoothScrollTo(0, 0);
         }
     }
 
