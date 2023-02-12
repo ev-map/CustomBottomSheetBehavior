@@ -32,7 +32,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 
-    implementation "com.google.android.material:material:$rootProject.ext.supportVersion"
+    implementation "com.google.android.material:material:$rootProject.ext.materialVersion"
 
     implementation project(':googlemaps-like')
 //    implementation "com.mahc.custombottomsheetbehavior:googlemaps-like:$rootProject.ext.bottomSheetVersion"

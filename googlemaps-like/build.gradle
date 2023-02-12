@@ -20,11 +20,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:$rootProject.ext.supportVersion"
-    implementation "com.google.android.material:material:$rootProject.ext.supportVersion"
+    implementation "com.google.android.material:material:$rootProject.ext.materialVersion"
 }
 
 //task wrapper(type: Wrapper) {
 //    gradleVersion = '3.4.1'
 //}
-
-apply from: 'bintray.gradle'
