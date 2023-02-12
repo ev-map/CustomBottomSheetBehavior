@@ -27,6 +27,6 @@ MergedAppBarLayout.java init() method-->
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextColor="@android:color/white"
             app:title="@string/key_binding_default_toolbar_name"
-            app:navigationIcon="@drawable/ic_close_white_24dp"/>
+            app:navigationIcon="@drawable/bottomsheetbehavior_ic_close_white"/>
     </FrameLayout>
 </merge>
